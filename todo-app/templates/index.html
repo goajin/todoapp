@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>🎨 Stylish To-Do List</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Stylish To-Do List</h1>
+
+        <form action="/add" method="post">
+            <input type="text" name="task" placeholder="할 일을 입력하세요" required>
+            <button type="submit">➕ 추가</button>
+        </form>
+
+        <ul>
+            {% for t in todos %}
+            <li class="todo-item">
+                <label>
+                    <input type="checkbox" class="check-todo">
+                    <span class="task-text">{{ t }}</span>
+                </label>
+                <a href="/delete/{{ loop.index0 }}" class="delete-btn">❌</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        // 체크박스 완료 시 줄긋기
+        const checkboxes = document.querySelectorAll('.check-todo');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                if(cb.checked){
+                    cb.nextElementSibling.classList.add('completed');
+                } else {
+                    cb.nextElementSibling.classList.remove('completed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
