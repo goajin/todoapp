@@ -3,36 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파이썬 Flask To-do 리스트</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>할 일 관리</title>
+    <style>
+        /* 화면 전체 설정 */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 가로 중앙 정렬 */
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 50px; /* 상단 여백 */
+            font-family: sans-serif;
+            background-color: #f4f7f6; /* 배경색 살짝 추가 */
+        }
+
+        /* 전체를 감싸는 상자 */
+        .container {
+            width: 90%;
+            max-width: 500px; /* 너무 넓어지지 않게 고정 */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
+        }
+
+        h1 { text-align: center; color: #333; }
+        
+        form { display: flex; gap: 5px; margin-bottom: 20px; }
+        input[type="text"] { flex: 1; padding: 8px; }
+        
+        ul { list-style: none; padding: 0; }
+        li { 
+            padding: 10px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>•̀ɞ•́ 투두 리스트</h1>
+    <div class="container">
+        <h1>📅 할 일 관리</h1>
 
-    <form action="{{ url_for('add_todo') }}" method="POST">
-        <input type="text" name="task" placeholder="새 할 일을 입력하세요" required>
-        <button type="submit">추가</button>
-    </form>
+        <form action="/add" method="POST">
+            <input type="text" name="task" placeholder="할 일 입력" required>
+            <input type="date" name="due_date"> 
+            <button type="submit">추가</button>
+        </form>
 
-    <hr>
+        <hr>
 
-    <ul>
-        {% for todo in todos %}
-        <li class="{{ 'done' if todo.done else '' }}">
-            
-            <a href="{{ url_for('toggle_todo', todo_id=todo.id) }}" 
-               class="task-content" 
-               style="text-decoration: none; color: inherit;">
-                [{{ '✅' if todo.done else '❌' }}] {{ todo.task }}
-            </a>
-            
-            <a href="{{ url_for('delete_todo', todo_id=todo.id) }}" 
-               class="delete-btn">
-               [삭제]
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-    
-</body>
-</html>
+        <ul>
+            {% for todo in todos %}
+            <li>
+                <div>
+                    <strong style="{{ 'text-decoration: line-through; color: gray;' if todo.done else '' }}">
+                        {{ todo.task }}
+                    </strong>
+                    <br
