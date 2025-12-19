@@ -3,63 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>할 일 관리</title>
+    <title>오늘 할 일⋋(•⌔•)⋌</title>
     <style>
-        /* 화면 전체 설정 */
         body {
             display: flex;
             flex-direction: column;
-            align-items: center; /* 가로 중앙 정렬 */
-            justify-content: flex-start;
+            align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding-top: 50px; /* 상단 여백 */
-            font-family: sans-serif;
-            background-color: #f4f7f6; /* 배경색 살짝 추가 */
+            padding-top: 50px;
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #e1f9ff;
         }
-
-        /* 전체를 감싸는 상자 */
         .container {
             width: 90%;
-            max-width: 500px; /* 너무 넓어지지 않게 고정 */
-            background: white;
+            max-width: 500px;
+            background: rgb(255, 242, 242);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
+            box-shadow: 0 4px 10px rgba(255, 142, 142, 0.2);
         }
-
-        h1 { text-align: center; color: #333; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
         
         form { display: flex; gap: 5px; margin-bottom: 20px; }
-        input[type="text"] { flex: 1; padding: 8px; }
-        
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid rgb(255, 130, 130); border-radius: 6px; outline: none; }
+        input[type="date"] { padding: 10px; border: 1px solid hsl(0, 100%, 74%); border-radius: 6px; outline: none; }
+        button { padding: 10px 15px; background: #ffa6a6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #ff8e8e; }
+
         ul { list-style: none; padding: 0; }
         li { 
-            padding: 10px; 
-            border-bottom: 1px solid #eee; 
+            padding: 15px; 
+            border-bottom: 1px solid #ffe4e4; 
             display: flex; 
             justify-content: space-between;
             align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+            border-radius: 8px;
         }
+        
+        .todo-info { display: flex; flex-direction: column; gap: 5px; }
+        .d-day-badge {
+            display: inline-block;
+            background-color: #ff7675;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .actions { display: flex; gap: 15px; font-size: 1.2em; }
+        a { text-decoration: none; }
+        .done-text { text-decoration: line-through; color: #a0a0a0 !important; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📅 할 일 관리</h1>
+        <h1>오늘 할 일⋋(•⌔•)⋌</h1>
 
         <form action="/add" method="POST">
-            <input type="text" name="task" placeholder="할 일 입력" required>
+            <input type="text" name="task" placeholder="무엇을 해야 하나요?" required>
             <input type="date" name="due_date"> 
             <button type="submit">추가</button>
         </form>
 
-        <hr>
+        <hr style="border: 0.5px solid #ffcccc; margin: 20px 0;">
 
         <ul>
             {% for todo in todos %}
             <li>
-                <div>
-                    <strong style="{{ 'text-decoration: line-through; color: gray;' if todo.done else '' }}">
-                        {{ todo.task }}
-                    </strong>
-                    <br
+                <div class="todo-info">
+                    <strong class="{{ 'done-text' if todo.done else '' }}" style="font-size: 1.1em; color: #444;">
